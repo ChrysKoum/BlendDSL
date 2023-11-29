@@ -1,0 +1,237 @@
+import React, { useState, useRef, useCallback } from "react";
+import ReactFlow, {
+  MiniMap,
+  Controls,
+  Background,
+  ReactFlowProvider,
+  addEdge,
+  useNodesState,
+  useEdgesState,
+  Edge,
+  Node,
+  Connection,
+  EdgeChange,
+  NodeChange,
+  ReactFlowInstance,
+} from "reactflow";
+import "reactflow/dist/style.css";
+import { FiFile } from "react-icons/fi";
+
+import Sidebar from "./sidebar_right/Sidebar";
+import SensorNode from "./custom_nodes/SensorNode";
+
+import "reactflow/dist/base.css";
+import "./index.css";
+import TurboNode, { TurboNodeData } from "./style/TurboNode";
+import TurboEdge from "./style/TurboEdge";
+import FunctionIcon from "./style/FunctionIcon";
+
+const nodeTypes = {
+  sensor: SensorNode,
+  turbo: TurboNode,
+};
+
+const edgeTypes = {
+  turbo: TurboEdge,
+};
+
+const defaultEdgeOptions = {
+  type: "turbo",
+  markerEnd: "edge-circle",
+};
+
+const initialNodes: Node<TurboNodeData>[] = [
+  {
+    id: "1",
+    position: { x: 0, y: 0 },
+    data: { icon: <FunctionIcon />, title: "Sensor", subline: "api.ts" },
+    type: "turbo",
+  },
+  {
+    id: "2",
+    position: { x: 250, y: 0 },
+    data: { icon: <FunctionIcon />, title: "Actuator", subline: "apiContents" },
+    type: "turbo",
+  },
+  {
+    id: "3",
+    position: { x: 0, y: 250 },
+    data: { icon: <FunctionIcon />, title: "Sensor", subline: "sdk.ts" },
+    type: "turbo",
+  },
+  {
+    id: "4",
+    position: { x: 250, y: 250 },
+    data: { icon: <FunctionIcon />, title: "Actuator", subline: "sdkContents" },
+    type: "turbo",
+  },
+  {
+    id: "5",
+    position: { x: 500, y: 125 },
+    data: { icon: <FunctionIcon />, title: "Brokers", subline: "api, sdk" },
+    type: "turbo",
+  },
+  {
+    id: "6",
+    position: { x: 750, y: 125 },
+    data: { icon: <FiFile />, title: "Automation" },
+    type: "turbo",
+  },
+];
+
+const initialEdges: Edge[] = [
+  {
+    id: "e1-2",
+    source: "1",
+    target: "2",
+  },
+  {
+    id: "e3-4",
+    source: "3",
+    target: "4",
+  },
+  {
+    id: "e2-5",
+    source: "2",
+    target: "5",
+  },
+  {
+    id: "e4-5",
+    source: "4",
+    target: "5",
+  },
+  {
+    id: "e5-6",
+    source: "5",
+    target: "6",
+  },
+];
+
+let id = 0;
+const getId = () => `dndnode_${id++}`;
+
+interface FlowNode extends Node {
+  data: { label: string };
+}
+
+const DnDFlow: React.FC = () => {
+  const reactFlowWrapper = useRef<HTMLDivElement>(null);
+  const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
+  const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
+  const [isLeftSidebarOpen, setIsLeftSidebarOpen] = useState(false); // Add this line
+  const [reactFlowInstance, setReactFlowInstance] =
+    useState<ReactFlowInstance | null>(null);
+
+  const onConnect = useCallback(
+    (params: Edge | Connection) => setEdges((eds) => addEdge(params, eds)),
+    [setEdges]
+  );
+
+  const onDragOver = useCallback((event: React.DragEvent) => {
+    event.preventDefault();
+    event.dataTransfer.dropEffect = "move";
+  }, []);
+
+  const onDrop = useCallback(
+    (event: React.DragEvent) => {
+      event.preventDefault();
+
+      const reactFlowBounds = reactFlowWrapper.current?.getBoundingClientRect();
+
+      const type = event.dataTransfer.getData("application/reactflow");
+      console.log(type);
+      if (typeof type === "undefined" || !type) {
+        return;
+      }
+
+      if (reactFlowInstance && reactFlowBounds) {
+        const position = reactFlowInstance.project({
+          x: event.clientX - reactFlowBounds.left,
+          y: event.clientY - reactFlowBounds.top,
+        });
+
+        const newNode = {
+          id: getId(),
+          type: type.toLowerCase(),
+          position,
+          data:
+            type.toLowerCase() == "turbo"
+              ? {
+                  icon: <FunctionIcon />,
+                  title: `${type} Node`,
+                  subline: `${type}.ts`,
+                }
+              : { label: `${type} Node` },
+        };
+
+        setNodes((nds) => nds.concat(newNode));
+      }
+    },
+    [reactFlowInstance, setNodes]
+  );
+
+  return (
+    <div className="dndflow">
+      <ReactFlowProvider>
+        <div className="reactflow-wrapper" ref={reactFlowWrapper}>
+          <ReactFlow
+            nodes={nodes}
+            edges={edges}
+            nodeTypes={nodeTypes}
+            edgeTypes={edgeTypes}
+            defaultEdgeOptions={defaultEdgeOptions}
+            onNodesChange={onNodesChange as (changes: NodeChange[]) => void}
+            onEdgesChange={onEdgesChange as (changes: EdgeChange[]) => void}
+            onConnect={onConnect}
+            onInit={setReactFlowInstance}
+            onDrop={onDrop}
+            onDragOver={onDragOver}
+            fitView
+          >
+            <Controls />
+            <svg>
+              <defs>
+                <linearGradient id="edge-gradient">
+                  <stop offset="0%" stopColor="#ae53ba" />
+                  <stop offset="100%" stopColor="#2a8af6" />
+                </linearGradient>
+
+                <marker
+                  id="edge-circle"
+                  viewBox="-5 -5 10 10"
+                  refX="0"
+                  refY="0"
+                  markerUnits="strokeWidth"
+                  markerWidth="10"
+                  markerHeight="10"
+                  orient="auto"
+                >
+                  <circle
+                    stroke="#2a8af6"
+                    strokeOpacity="0.75"
+                    r="2"
+                    cx="0"
+                    cy="0"
+                  />
+                </marker>
+              </defs>
+            </svg>
+            <MiniMap
+              nodeStrokeColor={(n) => {
+                if (n.type == "sensor") return "#550072";
+              }}
+              nodeColor={(n) => {
+                if (n.type === "sensor") return "#8d8ddd";
+                return "grey";
+              }}
+            />
+            <Background color="#ccc" variant="cross" gap={12} size={1} />
+          </ReactFlow>
+        </div>
+        <Sidebar />
+      </ReactFlowProvider>
+    </div>
+  );
+};
+
+export default DnDFlow;

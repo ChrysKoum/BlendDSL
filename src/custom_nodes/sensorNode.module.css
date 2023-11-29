@@ -1,0 +1,36 @@
+
+.sensorNode {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  border: 1px solid black;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.3s ease;
+  background-color: white;
+}
+
+.sensorNodeButton {
+  margin-right: 8px;
+  padding: 5px 10px;
+  border: none;
+  border-radius: 4px;
+  border: 1px solid black;
+  cursor: pointer;
+  background-color: #f0f0f0;
+  transition: background-color 0.3s ease;
+}
+
+.sensorNodeButton:hover, .sensorNodeButton:focus {
+  background-color: rgb(124, 124, 253);
+}
+
+.attributesFilled {
+  background-color: blue;
+  color: white;
+}
+
+.attributesEmpty {
+  background-color: grey;
+  color: black;
+}
