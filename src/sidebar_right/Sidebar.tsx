@@ -15,6 +15,9 @@ const Sidebar: React.FC = () => {
         You can drag these nodes to the panel on the left.
         <br />
         Also you can delete the nodes with the backspace key
+        <br />
+        Also only the turbo node is styled and the nodes are missing the edges
+        that can drag and connect
       </div>
       <div
         className="dndnode sensor"
