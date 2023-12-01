@@ -13,6 +13,8 @@ const Sidebar: React.FC = () => {
     <aside>
       <div className="description">
         You can drag these nodes to the panel on the left.
+        <br />
+        Also you can delete the nodes with the backspace key
       </div>
       <div
         className="dndnode sensor"

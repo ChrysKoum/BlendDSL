@@ -18,7 +18,6 @@ import "reactflow/dist/style.css";
 import { FiFile } from "react-icons/fi";
 
 import Sidebar from "./sidebar_right/Sidebar";
-import SensorNode from "./custom_nodes/SensorNode";
 
 import "reactflow/dist/base.css";
 import "./index.css";
@@ -27,7 +26,6 @@ import TurboEdge from "./style/TurboEdge";
 import FunctionIcon from "./style/FunctionIcon";
 
 const nodeTypes = {
-  sensor: SensorNode,
   turbo: TurboNode,
 };
 
@@ -74,7 +72,13 @@ const initialNodes: Node<TurboNodeData>[] = [
   {
     id: "6",
     position: { x: 750, y: 125 },
-    data: { icon: <FiFile />, title: "Automation" },
+    data: { icon: <FiFile />, title: "Automation 1" },
+    type: "turbo",
+  },
+  {
+    id: "7",
+    position: { x: 1000, y: 125 },
+    data: { icon: <FiFile />, title: "Automation 2" },
     type: "turbo",
   },
 ];
@@ -105,6 +109,11 @@ const initialEdges: Edge[] = [
     source: "5",
     target: "6",
   },
+  {
+    id: "e6-7",
+    source: "6",
+    target: "7",
+  },
 ];
 
 let id = 0;
@@ -118,7 +127,6 @@ const DnDFlow: React.FC = () => {
   const reactFlowWrapper = useRef<HTMLDivElement>(null);
   const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
-  const [isLeftSidebarOpen, setIsLeftSidebarOpen] = useState(false); // Add this line
   const [reactFlowInstance, setReactFlowInstance] =
     useState<ReactFlowInstance | null>(null);
 
