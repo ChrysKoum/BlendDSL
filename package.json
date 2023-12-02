@@ -5,14 +5,16 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
+    "start": "serve -s dist",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview"
   },
   "dependencies": {
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-icons": "latest",
     "reactflow": "^11.9.4",
-    "react-icons": "latest"
+    "serve": "^14.2.1"
   },
   "license": "MIT",
   "devDependencies": {
