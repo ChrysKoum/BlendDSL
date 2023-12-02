@@ -160,16 +160,13 @@ const DnDFlow: React.FC = () => {
 
         const newNode = {
           id: getId(),
-          type: type.toLowerCase(),
+          type: "turbo",
           position,
-          data:
-            type.toLowerCase() == "turbo"
-              ? {
-                  icon: <FunctionIcon />,
-                  title: `${type} Node`,
-                  subline: `${type}.ts`,
-                }
-              : { label: `${type} Node` },
+          data: {
+            icon: <FunctionIcon />,
+            title: `${type} Node`,
+            subline: `${type}.ts`,
+          },
         };
 
         setNodes((nds) => nds.concat(newNode));

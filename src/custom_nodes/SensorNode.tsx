@@ -1,18 +1,33 @@
 import React, { useState, FC } from "react";
-import styles from "./sensorNode.module.css"; // Assuming you have a CSS module for styling
+import { Handle, NodeProps, Position } from "reactflow";
+import styles from "./sensorNode.module.css";
 
 interface SensorNodeProps {
   id: string;
   data: { label: string; attributes?: any };
-  onChange: (node: SensorNodeProps) => void;
 }
 
-const SensorNode: FC<SensorNodeProps> = ({ id, data, onChange }) => {
+const SensorNode: FC<SensorNodeProps> = ({ id, data, isConnectable }) => {
   return (
-    <div className={styles.sensorNode}>
-      <button className={styles.sensorNodeButton}>Add</button>
-      <div>{data.label}</div>
-    </div>
+    <>
+      <Handle
+        type="target"
+        position={Position.Left}
+        style={{ background: "#555" }}
+        onConnect={(params) => console.log("handle onConnect", params)}
+        isConnectable={isConnectable}
+      />
+      <div className={styles.sensorNode}>
+        <button className={styles.sensorNodeButton}>Add</button>
+        <div>{data.label}</div>
+      </div>
+      <Handle
+        type="source"
+        position={Position.Right}
+        id="source-turbo"
+        isConnectable={isConnectable}
+      />
+    </>
   );
 };
 

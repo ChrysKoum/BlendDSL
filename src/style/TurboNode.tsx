@@ -55,6 +55,13 @@ export default memo(({ id, data, isConnectable }: NodeProps<TurboNodeData>) => {
 
   return (
     <>
+      <Handle
+        type="target"
+        position={Position.Left}
+        id="target-turbo"
+        onConnect={(params) => console.log("handle onConnect", params)}
+        isConnectable={isConnectable}
+      />
       <a href="#" onClick={handleEditClick}>
         <div className="cloud gradient">
           <div>
@@ -72,20 +79,14 @@ export default memo(({ id, data, isConnectable }: NodeProps<TurboNodeData>) => {
               {data.subline && <div className="subline">{data.subline}</div>}
             </div>
           </div>
-          <Handle
-            type="target"
-            position={Position.Left}
-            id="target-turbo"
-            isConnectable={isConnectable}
-          />
-          <Handle
-            type="source"
-            position={Position.Right}
-            id="source-turbo"
-            isConnectable={isConnectable}
-          />
         </div>
       </div>
+      <Handle
+        type="source"
+        position={Position.Right}
+        id="source-turbo"
+        isConnectable={isConnectable}
+      />
     </>
   );
 });

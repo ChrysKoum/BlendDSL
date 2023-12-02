@@ -12,12 +12,10 @@ const Sidebar: React.FC = () => {
   return (
     <aside>
       <div className="description">
-        You can drag these nodes to the panel on the left.
-        <br />
-        Also you can delete the nodes with the backspace key
-        <br />
-        Also only the turbo node is styled and the nodes are missing the edges
-        that can drag and connect
+        <p>You can drag these nodes to the panel on the left.</p>
+        <p>
+          Also you can delete the nodes and the edges with the backspace key
+        </p>
       </div>
       <div
         className="dndnode sensor"
@@ -53,13 +51,6 @@ const Sidebar: React.FC = () => {
         draggable
       >
         Automation
-      </div>
-      <div
-        className="dndnode turbo"
-        onDragStart={(event) => onDragStart(event, "Turbo")}
-        draggable
-      >
-        Turbo
       </div>
     </aside>
   );

@@ -235,15 +235,16 @@
 }
 
 .react-flow__handle {
-  opacity: 0;
+  border: 2px solid #2a8af6;
+  background: #2a8af6;
 }
 
 .react-flow__handle.source {
-  right: -10px;
+  right: -18px;
 }
 
 .react-flow__handle.target {
-  left: -10px;
+  left: -18px;
 }
 
 .react-flow__node:focus {
