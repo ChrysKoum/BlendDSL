@@ -8,8 +8,13 @@ export type TurboNodeData = {
   subline?: string;
 };
 
+interface SensorFormProps {
+  isVisible: boolean;
+  onClose: () => void; // Assuming onClose is a function with no parameters and no return value
+}
+
 // Form component (placeholder for your detailed form)
-const SensorForm = ({ isVisible, onClose }) => {
+const SensorForm: React.FC<SensorFormProps> = ({ isVisible, onClose }) => {
   if (!isVisible) return null;
 
   return (
@@ -41,10 +46,10 @@ const SensorForm = ({ isVisible, onClose }) => {
   );
 };
 
-export default memo(({ id, data, isConnectable }: NodeProps<TurboNodeData>) => {
+export default memo(({ data, isConnectable }: NodeProps<TurboNodeData>) => {
   const [isFormVisible, setFormVisible] = useState(false);
 
-  const handleEditClick = (event) => {
+  const handleEditClick = (event: React.MouseEvent<HTMLAnchorElement>) => {
     event.preventDefault();
     setFormVisible(true);
   };

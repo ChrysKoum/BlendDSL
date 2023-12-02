@@ -119,10 +119,6 @@ const initialEdges: Edge[] = [
 let id = 0;
 const getId = () => `dndnode_${id++}`;
 
-interface FlowNode extends Node {
-  data: { label: string };
-}
-
 const DnDFlow: React.FC = () => {
   const reactFlowWrapper = useRef<HTMLDivElement>(null);
   const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
@@ -221,16 +217,8 @@ const DnDFlow: React.FC = () => {
                 </marker>
               </defs>
             </svg>
-            <MiniMap
-              nodeStrokeColor={(n) => {
-                if (n.type == "sensor") return "#550072";
-              }}
-              nodeColor={(n) => {
-                if (n.type === "sensor") return "#8d8ddd";
-                return "grey";
-              }}
-            />
-            <Background color="#ccc" variant="cross" gap={12} size={1} />
+            <MiniMap />
+            <Background color="#ccc" gap={12} size={1} />
           </ReactFlow>
         </div>
         <Sidebar />

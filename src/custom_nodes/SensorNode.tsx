@@ -1,13 +1,14 @@
-import React, { useState, FC } from "react";
-import { Handle, NodeProps, Position } from "reactflow";
+import { FC } from "react";
+import { Handle, Position } from "reactflow";
 import styles from "./sensorNode.module.css";
 
 interface SensorNodeProps {
   id: string;
   data: { label: string; attributes?: any };
+  isConnectable: boolean;
 }
 
-const SensorNode: FC<SensorNodeProps> = ({ id, data, isConnectable }) => {
+const SensorNode: FC<SensorNodeProps> = ({ data, isConnectable }) => {
   return (
     <>
       <Handle
