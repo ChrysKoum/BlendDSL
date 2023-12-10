@@ -7,12 +7,6 @@ import ReactFlow, {
   addEdge,
   useNodesState,
   useEdgesState,
-  Edge,
-  Node,
-  Connection,
-  EdgeChange,
-  NodeChange,
-  ReactFlowInstance,
 } from "reactflow";
 import "reactflow/dist/style.css";
 import { FiFile } from "react-icons/fi";
@@ -21,7 +15,7 @@ import Sidebar from "./sidebar_right/Sidebar";
 
 import "reactflow/dist/base.css";
 import "./index.css";
-import TurboNode, { TurboNodeData } from "./style/TurboNode";
+import TurboNode from "./style/TurboNode";
 import TurboEdge from "./style/TurboEdge";
 import FunctionIcon from "./style/FunctionIcon";
 
@@ -38,7 +32,7 @@ const defaultEdgeOptions = {
   markerEnd: "edge-circle",
 };
 
-const initialNodes: Node<TurboNodeData>[] = [
+const initialNodes = [
   {
     id: "1",
     position: { x: 0, y: 0 },
@@ -83,7 +77,7 @@ const initialNodes: Node<TurboNodeData>[] = [
   },
 ];
 
-const initialEdges: Edge[] = [
+const initialEdges = [
   {
     id: "e1-2",
     source: "1",
@@ -119,31 +113,29 @@ const initialEdges: Edge[] = [
 let id = 0;
 const getId = () => `dndnode_${id++}`;
 
-const DnDFlow: React.FC = () => {
-  const reactFlowWrapper = useRef<HTMLDivElement>(null);
+const DnDFlow = () => {
+  const reactFlowWrapper = useRef(null);
   const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
-  const [reactFlowInstance, setReactFlowInstance] =
-    useState<ReactFlowInstance | null>(null);
+  const [reactFlowInstance, setReactFlowInstance] = useState(null);
 
   const onConnect = useCallback(
-    (params: Edge | Connection) => setEdges((eds) => addEdge(params, eds)),
+    (params) => setEdges((eds) => addEdge(params, eds)),
     [setEdges]
   );
 
-  const onDragOver = useCallback((event: React.DragEvent) => {
+  const onDragOver = useCallback((event) => {
     event.preventDefault();
     event.dataTransfer.dropEffect = "move";
   }, []);
 
   const onDrop = useCallback(
-    (event: React.DragEvent) => {
+    (event) => {
       event.preventDefault();
 
       const reactFlowBounds = reactFlowWrapper.current?.getBoundingClientRect();
 
       const type = event.dataTransfer.getData("application/reactflow");
-      console.log(type);
       if (typeof type === "undefined" || !type) {
         return;
       }
@@ -181,8 +173,8 @@ const DnDFlow: React.FC = () => {
             nodeTypes={nodeTypes}
             edgeTypes={edgeTypes}
             defaultEdgeOptions={defaultEdgeOptions}
-            onNodesChange={onNodesChange as (changes: NodeChange[]) => void}
-            onEdgesChange={onEdgesChange as (changes: EdgeChange[]) => void}
+            onNodesChange={onNodesChange}
+            onEdgesChange={onEdgesChange}
             onConnect={onConnect}
             onInit={setReactFlowInstance}
             onDrop={onDrop}

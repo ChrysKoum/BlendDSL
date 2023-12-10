@@ -1,10 +1,7 @@
 import React from "react";
 
-const Sidebar: React.FC = () => {
-  const onDragStart = (
-    event: React.DragEvent<HTMLDivElement>,
-    nodeType: string
-  ) => {
+const Sidebar = () => {
+  const onDragStart = (event, nodeType) => {
     event.dataTransfer.setData("application/reactflow", nodeType);
     event.dataTransfer.effectAllowed = "move";
   };

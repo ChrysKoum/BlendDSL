@@ -1,4 +1,4 @@
-import { EdgeProps, getBezierPath } from "reactflow";
+import { getBezierPath } from "reactflow";
 
 export default function CustomEdge({
   id,
@@ -10,7 +10,7 @@ export default function CustomEdge({
   targetPosition,
   style = {},
   markerEnd,
-}: EdgeProps) {
+}) {
   const xEqual = sourceX === targetX;
   const yEqual = sourceY === targetY;
 

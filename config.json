@@ -3,7 +3,7 @@
   "name": "Pro Example Name",
   "description": "...",
   "tags": ["workflow"],
-  "files": ["App.tsx"],
+  "files": ["App.js"],
   "dependencies": {},
   "published": false,
   "icon": "diagram-tree",

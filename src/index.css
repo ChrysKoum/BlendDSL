@@ -2,8 +2,6 @@
   ** Sidebar **
 */
 
-
-
 .dndflow {
   flex-direction: column;
   display: flex;
@@ -74,11 +72,10 @@
   }
 }
 
+
 /* 
   ** Custom Styling **
 */
-
-
 
 .react-flow {
   --bg-color: rgb(17, 17, 17);
@@ -285,6 +282,16 @@
   background: rgba(200, 200, 200, 0.2);
 }
 
-.react-flow__attribution a {
+.react-flow__attribution {
   color: #95679e;
+}
+
+/* edit button */
+
+.edit-button {
+  background: none;
+  color: white;
+  border: none;
+  padding: 0;
+  cursor: pointer;
 }

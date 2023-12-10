@@ -1,20 +1,9 @@
-import { useState, memo, ReactNode } from "react";
-import { Handle, NodeProps, Position } from "reactflow";
+import { useState, memo } from "react";
+import { Handle, Position } from "reactflow";
 import { MdEdit } from "react-icons/md";
 
-export type TurboNodeData = {
-  title: string;
-  icon?: ReactNode;
-  subline?: string;
-};
-
-interface SensorFormProps {
-  isVisible: boolean;
-  onClose: () => void; // Assuming onClose is a function with no parameters and no return value
-}
-
-// Form component (placeholder for your detailed form)
-const SensorForm: React.FC<SensorFormProps> = ({ isVisible, onClose }) => {
+// SensorForm component
+const SensorForm = ({ isVisible, onClose }) => {
   if (!isVisible) return null;
 
   return (
@@ -46,10 +35,11 @@ const SensorForm: React.FC<SensorFormProps> = ({ isVisible, onClose }) => {
   );
 };
 
-export default memo(({ data, isConnectable }: NodeProps<TurboNodeData>) => {
+// TurboNode component
+export default memo(({ data, isConnectable }) => {
   const [isFormVisible, setFormVisible] = useState(false);
 
-  const handleEditClick = (event: React.MouseEvent<HTMLAnchorElement>) => {
+  const handleEditClick = (event) => {
     event.preventDefault();
     setFormVisible(true);
   };
@@ -67,13 +57,13 @@ export default memo(({ data, isConnectable }: NodeProps<TurboNodeData>) => {
         onConnect={(params) => console.log("handle onConnect", params)}
         isConnectable={isConnectable}
       />
-      <a href="#" onClick={handleEditClick}>
+      <button onClick={handleEditClick} className="edit-button">
         <div className="cloud gradient">
           <div>
             <MdEdit />
           </div>
         </div>
-      </a>
+      </button>
       <SensorForm isVisible={isFormVisible} onClose={handleCloseForm} />
       <div className="wrapper gradient">
         <div className="inner">
