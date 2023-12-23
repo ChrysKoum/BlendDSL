@@ -15,9 +15,11 @@ import Sidebar from "./sidebar_right/Sidebar";
 
 import "reactflow/dist/base.css";
 import "./index.css";
-import TurboNode from "./style/TurboNode";
-import TurboEdge from "./style/TurboEdge";
-import FunctionIcon from "./style/FunctionIcon";
+
+import TurboNode from "./custom_nodes/automation/AutomationNode";
+import TurboEdge from "./custom_edge/CustomEdge";
+
+import FunctionIcon from "./custom_nodes/FunctionIcon";
 
 const nodeTypes = {
   turbo: TurboNode,

@@ -295,3 +295,20 @@
   padding: 0;
   cursor: pointer;
 }
+
+/* close edge button */
+
+.edgebutton {
+  width: 20px;
+  height: 20px;
+  background: #e6e6e6;
+  border: 1px solid #e6e6e6;
+  cursor: pointer;
+  border-radius: 50%;
+  font-size: 12px;
+  line-height: 1;
+}
+
+.edgebutton:hover {
+  box-shadow: 0 0 6px 2px rgba(255, 255, 255, 0.5);
+}
