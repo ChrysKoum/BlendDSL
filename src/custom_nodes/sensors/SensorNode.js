@@ -53,7 +53,7 @@ export default memo(({ data, isConnectable }) => {
       <Handle
         type="target"
         position={Position.Left}
-        id="target-turbo"
+        id="target-sensor"
         onConnect={(params) => console.log("handle onConnect", params)}
         isConnectable={isConnectable}
       />
@@ -79,7 +79,7 @@ export default memo(({ data, isConnectable }) => {
       <Handle
         type="source"
         position={Position.Right}
-        id="source-turbo"
+        id="source-sensor"
         isConnectable={isConnectable}
       />
     </>

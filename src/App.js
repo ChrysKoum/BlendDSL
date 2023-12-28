@@ -9,28 +9,42 @@ import ReactFlow, {
   useEdgesState,
 } from "reactflow";
 import "reactflow/dist/style.css";
-import { FiFile } from "react-icons/fi";
 
+/* Icons of the Nodes */
+import { FaAutoprefixer } from "react-icons/fa";
+import { MdOutlineSensors } from "react-icons/md";
+import { GrAction } from "react-icons/gr";
+// import { FaLink } from "react-icons/fa6";
+
+/* Sidebar */
 import Sidebar from "./sidebar_right/Sidebar";
 
+/* CSS */
 import "reactflow/dist/base.css";
 import "./index.css";
 
-import TurboNode from "./custom_nodes/automation/AutomationNode";
-import TurboEdge from "./custom_edge/CustomEdge";
-
-import FunctionIcon from "./custom_nodes/FunctionIcon";
+/* Custom Nodes */
+import BrockerNode from "./custom_nodes/broker/BrockerNode";
+import HybridNode from "./custom_nodes/hybrid/HybridNode";
+import SensorNode from "./custom_nodes/sensors/SensorNode";
+import ActuatorNode from "./custom_nodes/actuator/ActuatorNode";
+import AutomationNode from "./custom_nodes/automation/AutomationNode";
+import CustomEdge from "./custom_edge/CustomEdge";
 
 const nodeTypes = {
-  turbo: TurboNode,
+  brocker: BrockerNode,
+  hybrid: HybridNode,
+  sensor: SensorNode,
+  actuator: ActuatorNode,
+  automation: AutomationNode,
 };
 
 const edgeTypes = {
-  turbo: TurboEdge,
+  customEdge: CustomEdge,
 };
 
 const defaultEdgeOptions = {
-  type: "turbo",
+  type: "customEdge",
   markerEnd: "edge-circle",
 };
 
@@ -38,57 +52,79 @@ const initialNodes = [
   {
     id: "1",
     position: { x: 0, y: 0 },
-    data: { icon: <FunctionIcon />, title: "Sensor", subline: "api.ts" },
-    type: "turbo",
+    data: {
+      icon: <MdOutlineSensors />,
+      title: "Sensor",
+      subline: "Ambient Light",
+    },
+    type: "sensor",
   },
   {
     id: "2",
-    position: { x: 250, y: 0 },
-    data: { icon: <FunctionIcon />, title: "Actuator", subline: "apiContents" },
-    type: "turbo",
+    position: { x: 0, y: 125 },
+    data: {
+      icon: <MdOutlineSensors />,
+      title: "Actuator",
+      subline: "Humidifier",
+    },
+    type: "sensor",
   },
   {
     id: "3",
     position: { x: 0, y: 250 },
-    data: { icon: <FunctionIcon />, title: "Sensor", subline: "sdk.ts" },
-    type: "turbo",
+    data: {
+      icon: <GrAction />,
+      title: "Sensor",
+      subline: "Area Alarm",
+    },
+    type: "sensor",
   },
   {
     id: "4",
-    position: { x: 250, y: 250 },
-    data: { icon: <FunctionIcon />, title: "Actuator", subline: "sdkContents" },
-    type: "turbo",
+    position: { x: 0, y: 375 },
+    data: {
+      icon: <MdOutlineSensors />,
+      title: "Actuator",
+      subline: "Light",
+    },
+    type: "sensor",
   },
   {
     id: "5",
-    position: { x: 500, y: 125 },
-    data: { icon: <FunctionIcon />, title: "Brokers", subline: "api, sdk" },
-    type: "turbo",
+    position: { x: 500, y: 175 },
+    data: { icon: <MdOutlineSensors />, title: "Brokers", subline: "MQTT" },
+    type: "sensor",
   },
   {
     id: "6",
     position: { x: 750, y: 125 },
-    data: { icon: <FiFile />, title: "Automation 1" },
-    type: "turbo",
+    data: { icon: <FaAutoprefixer />, title: "Automation 1" },
+    type: "automation",
   },
   {
     id: "7",
-    position: { x: 1000, y: 125 },
-    data: { icon: <FiFile />, title: "Automation 2" },
-    type: "turbo",
+    position: { x: 1200, y: 250 },
+    data: { icon: <FaAutoprefixer />, title: "Automation 2" },
+    type: "automation",
+  },
+  {
+    id: "8",
+    position: { x: 1200, y: 0 },
+    data: { icon: <FaAutoprefixer />, title: "Automation 3" },
+    type: "automation",
   },
 ];
 
 const initialEdges = [
   {
-    id: "e1-2",
+    id: "e1-5",
     source: "1",
-    target: "2",
+    target: "5",
   },
   {
-    id: "e3-4",
+    id: "e3-5",
     source: "3",
-    target: "4",
+    target: "5",
   },
   {
     id: "e2-5",
@@ -101,14 +137,16 @@ const initialEdges = [
     target: "5",
   },
   {
-    id: "e5-6",
-    source: "5",
-    target: "6",
+    id: "estart6-7",
+    source: "6",
+    target: "8",
+    sourceHandle: "automation-start-source",
   },
   {
-    id: "e6-7",
+    id: "estop6-8",
     source: "6",
     target: "7",
+    sourceHandle: "automation-stop-source",
   },
 ];
 
@@ -150,10 +188,10 @@ const DnDFlow = () => {
 
         const newNode = {
           id: getId(),
-          type: "turbo",
+          type: "sensor",
           position,
           data: {
-            icon: <FunctionIcon />,
+            icon: <MdOutlineSensors />,
             title: `${type} Node`,
             subline: `${type}.ts`,
           },
