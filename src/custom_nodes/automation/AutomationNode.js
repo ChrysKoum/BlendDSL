@@ -1,6 +1,8 @@
 import { useState, memo } from "react";
-import { Position } from "reactflow";
+import { Position, useReactFlow } from "reactflow";
 import { MdEdit } from "react-icons/md";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import AutomationHandle from "./AutomationHandle";
 
 // SensorForm component
@@ -37,8 +39,9 @@ const SensorForm = ({ isVisible, onClose }) => {
 };
 
 // TurboNode component
-export default memo(({ data, isConnectable }) => {
+export default memo(({ id, data, isConnectable }) => {
   const [isFormVisible, setFormVisible] = useState(false);
+  const { setEdges } = useReactFlow();
 
   const handleEditClick = (event) => {
     event.preventDefault();
@@ -49,12 +52,28 @@ export default memo(({ data, isConnectable }) => {
     setFormVisible(false);
   };
 
-  const handleConnect = (connection) => {
-    console.log("handle data", data);
-    if (data.type === "automation") {
-      return true;
+  const onEdgeClick = (id) => {
+    setEdges((edges) => edges.filter((edge) => edge.id !== id));
+  };
+
+  const handleConnect = (connection, id) => {
+    if (connection.targetHandle !== "automation-target") {
+      console.log("Prevent connection", connection);
+      onEdgeClick(id); // Function to remove the edge
+      toast.error("Automation only connect with Automations!", {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        style: { backgroundColor: "red", color: "white" },
+      });
+    } else {
+      console.log("Allowing connection", connection);
+      // Allow the connection
     }
-      return false;
   };
 
   return (
@@ -63,7 +82,7 @@ export default memo(({ data, isConnectable }) => {
         type="target"
         position={Position.Left}
         id="automation-target"
-        onConnect={handleConnect}
+        onConnect={(connection) => handleConnect(connection, id)}
       />
 
       <button onClick={handleEditClick} className="edit-button">
@@ -90,7 +109,7 @@ export default memo(({ data, isConnectable }) => {
         position={Position.Right}
         id="automation-start-source"
         style={{ top: 30, background: "#2a8af6" }}
-        onConnect={(connection) => console.log("handle onConnect", connection)}
+        onConnect={(connection) => handleConnect(connection, id)}
       />
 
       <AutomationHandle
@@ -98,7 +117,7 @@ export default memo(({ data, isConnectable }) => {
         position={Position.Right}
         id="automation-stop-source"
         style={{ top: 50, background: "#e92a67" }}
-        onConnect={(connection) => console.log("handle onConnect", connection)}
+        onConnect={(connection) => handleConnect(connection, id)}
       />
     </>
   );

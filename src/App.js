@@ -9,6 +9,7 @@ import ReactFlow, {
   useEdgesState,
 } from "reactflow";
 import "reactflow/dist/style.css";
+import { ToastContainer } from "react-toastify";
 
 /* Icons of the Nodes */
 import { MdOutlineSensors } from "react-icons/md";
@@ -161,6 +162,7 @@ const DnDFlow = () => {
         </div>
         <Sidebar />
       </ReactFlowProvider>
+      <ToastContainer />
     </div>
   );
 };

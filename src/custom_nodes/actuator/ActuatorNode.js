@@ -1,7 +1,9 @@
 import { useState, memo } from "react";
-import { Position } from "reactflow";
+import { Position, useReactFlow } from "reactflow";
 import { MdEdit } from "react-icons/md";
 import CustomHandle from "../CustomHandle";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 // SensorForm component
 const SensorForm = ({ isVisible, onClose }) => {
@@ -37,8 +39,9 @@ const SensorForm = ({ isVisible, onClose }) => {
 };
 
 // TurboNode component
-export default memo(({ data, isConnectable }) => {
+export default memo(({ id, data, isConnectable }) => {
   const [isFormVisible, setFormVisible] = useState(false);
+  const { setEdges } = useReactFlow();
 
   const handleEditClick = (event) => {
     event.preventDefault();
@@ -47,6 +50,30 @@ export default memo(({ data, isConnectable }) => {
 
   const handleCloseForm = () => {
     setFormVisible(false);
+  };
+
+  const onEdgeClick = (id) => {
+    setEdges((edges) => edges.filter((edge) => edge.id !== id));
+  };
+
+  const handleConnect = (connection, id, data) => {
+    if (connection.targetHandle === "automation-target") {
+      console.log("Prevent connection", connection);
+      onEdgeClick(id); // Function to remove the edge
+      toast.error(`${data.title} and Automation cannot connect!`, {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        style: { backgroundColor: "red", color: "white" },
+      });
+    } else {
+      console.log("Allowing connection", connection);
+      // Allow the connection
+    }
   };
 
   return (
@@ -73,8 +100,8 @@ export default memo(({ data, isConnectable }) => {
       <CustomHandle
         type="source"
         position={Position.Right}
-        id="source-turbo"
-        isConnectable={isConnectable}
+        id="source-sensor"
+        onConnect={(connection) => handleConnect(connection, id, data)}
       />
     </>
   );
