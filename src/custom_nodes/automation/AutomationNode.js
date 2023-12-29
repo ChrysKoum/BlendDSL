@@ -1,6 +1,7 @@
 import { useState, memo } from "react";
-import { Handle, Position } from "reactflow";
+import { Position } from "reactflow";
 import { MdEdit } from "react-icons/md";
+import AutomationHandle from "./AutomationHandle";
 
 // SensorForm component
 const SensorForm = ({ isVisible, onClose }) => {
@@ -48,14 +49,21 @@ export default memo(({ data, isConnectable }) => {
     setFormVisible(false);
   };
 
+  const handleConnect = (connection) => {
+    console.log("handle data", data);
+    if (data.type === "automation") {
+      return true;
+    }
+      return false;
+  };
+
   return (
     <>
-      <Handle
+      <AutomationHandle
         type="target"
         position={Position.Left}
         id="automation-target"
-        onConnect={(params) => console.log("handle onConnect", params)}
-        isConnectable={isConnectable}
+        onConnect={handleConnect}
       />
 
       <button onClick={handleEditClick} className="edit-button">
@@ -77,20 +85,20 @@ export default memo(({ data, isConnectable }) => {
           </div>
         </div>
       </div>
-      <Handle
+      <AutomationHandle
         type="source"
         position={Position.Right}
         id="automation-start-source"
         style={{ top: 30, background: "#2a8af6" }}
-        isConnectable={isConnectable}
+        onConnect={(connection) => console.log("handle onConnect", connection)}
       />
 
-      <Handle
+      <AutomationHandle
         type="source"
         position={Position.Right}
         id="automation-stop-source"
         style={{ top: 50, background: "#e92a67" }}
-        isConnectable={isConnectable}
+        onConnect={(connection) => console.log("handle onConnect", connection)}
       />
     </>
   );

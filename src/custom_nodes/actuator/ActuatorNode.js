@@ -1,6 +1,7 @@
 import { useState, memo } from "react";
-import { Handle, Position } from "reactflow";
+import { Position } from "reactflow";
 import { MdEdit } from "react-icons/md";
+import CustomHandle from "../CustomHandle";
 
 // SensorForm component
 const SensorForm = ({ isVisible, onClose }) => {
@@ -50,13 +51,6 @@ export default memo(({ data, isConnectable }) => {
 
   return (
     <>
-      <Handle
-        type="target"
-        position={Position.Left}
-        id="target-turbo"
-        onConnect={(params) => console.log("handle onConnect", params)}
-        isConnectable={isConnectable}
-      />
       <button onClick={handleEditClick} className="edit-button">
         <div className="cloud gradient">
           <div>
@@ -76,7 +70,7 @@ export default memo(({ data, isConnectable }) => {
           </div>
         </div>
       </div>
-      <Handle
+      <CustomHandle
         type="source"
         position={Position.Right}
         id="source-turbo"

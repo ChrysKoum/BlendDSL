@@ -2,6 +2,7 @@ import { useState, memo } from "react";
 import { Handle, Position } from "reactflow";
 import { MdEdit } from "react-icons/md";
 
+
 // SensorForm component
 const SensorForm = ({ isVisible, onClose }) => {
   if (!isVisible) return null;
@@ -76,12 +77,6 @@ export default memo(({ data, isConnectable }) => {
           </div>
         </div>
       </div>
-      <Handle
-        type="source"
-        position={Position.Right}
-        id="source-turbo"
-        isConnectable={isConnectable}
-      />
     </>
   );
 });

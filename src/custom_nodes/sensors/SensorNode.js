@@ -1,6 +1,8 @@
 import { useState, memo } from "react";
-import { Handle, Position } from "reactflow";
+import { Position, useEdgesState } from "reactflow";
 import { MdEdit } from "react-icons/md";
+import CustomHandle from "../CustomHandle";
+
 
 // SensorForm component
 const SensorForm = ({ isVisible, onClose }) => {
@@ -36,8 +38,9 @@ const SensorForm = ({ isVisible, onClose }) => {
 };
 
 // TurboNode component
-export default memo(({ data, isConnectable }) => {
+export default memo(({ data, type, isConnectable }) => {
   const [isFormVisible, setFormVisible] = useState(false);
+  const [targethandle, setTargetHandle] = useState(null);
 
   const handleEditClick = (event) => {
     event.preventDefault();
@@ -48,15 +51,15 @@ export default memo(({ data, isConnectable }) => {
     setFormVisible(false);
   };
 
+  const handleConnect = (connection) => {
+    if (connection.targetHandle === "automation-target") {
+      // Preventing connection creation
+      return;
+    }
+  };
+
   return (
     <>
-      <Handle
-        type="target"
-        position={Position.Left}
-        id="target-sensor"
-        onConnect={(params) => console.log("handle onConnect", params)}
-        isConnectable={isConnectable}
-      />
       <button onClick={handleEditClick} className="edit-button">
         <div className="cloud gradient">
           <div>
@@ -76,11 +79,12 @@ export default memo(({ data, isConnectable }) => {
           </div>
         </div>
       </div>
-      <Handle
+      <CustomHandle
         type="source"
         position={Position.Right}
         id="source-sensor"
-        isConnectable={isConnectable}
+        onConnect={(connection) => handleConnect(connection)}
+        targetHandle={targethandle}
       />
     </>
   );
