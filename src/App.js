@@ -83,6 +83,7 @@ const DnDFlow = () => {
       const reactFlowBounds = reactFlowWrapper.current?.getBoundingClientRect();
 
       const type = event.dataTransfer.getData("application/reactflow");
+
       if (typeof type === "undefined" || !type) {
         return;
       }
@@ -92,10 +93,12 @@ const DnDFlow = () => {
           x: event.clientX - reactFlowBounds.left,
           y: event.clientY - reactFlowBounds.top,
         });
+        
+       console.log("Type connection", type); 
 
         const newNode = {
           id: getId(),
-          type: "sensor",
+          type: `${type.toLowerCase()}`,
           position,
           data: {
             icon: <MdOutlineSensors />,

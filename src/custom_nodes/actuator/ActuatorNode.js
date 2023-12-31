@@ -58,7 +58,6 @@ export default memo(({ id, data, isConnectable }) => {
 
   const handleConnect = (connection, id, data) => {
     if (connection.targetHandle === "automation-target") {
-      console.log("Prevent connection", connection);
       onEdgeClick(id); // Function to remove the edge
       toast.error(`${data.title} and Automation cannot connect!`, {
         position: "top-center",
@@ -70,9 +69,9 @@ export default memo(({ id, data, isConnectable }) => {
         progress: undefined,
         style: { backgroundColor: "red", color: "white" },
       });
+      return false;
     } else {
-      console.log("Allowing connection", connection);
-      // Allow the connection
+      return true;
     }
   };
 
