@@ -9,19 +9,19 @@ const selector = (s) => ({
 const AutomationHandle = (props) => {
   const { nodeInternals, edges } = useStore(selector);
   const nodeId = useNodeId();
-  const { sourceHandle } = props;
+  // const { sourceHandle } = props;
 
    const isHandleConnectable = useMemo(() => {
      const node = nodeInternals.get(nodeId);
      const connectedEdges = getConnectedEdges([node], edges);
      // Check if the node type is 'automation'
-     if (
-       sourceHandle === "automation-start-source" ||
-       sourceHandle === "automation-stop-source"
-     ) {
-       // Dont limit the connection for automation nodes
-       return true;
-     }
+    //  if (
+    //    sourceHandle === "automation-start-source" ||
+    //    sourceHandle === "automation-stop-source"
+    //  ) {
+    //    // Dont limit the connection for automation nodes
+    //    return true;
+    //  }
 
     // limit to only none connection for others nodes
      return connectedEdges.length < 3;
