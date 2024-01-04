@@ -6,7 +6,7 @@ import "react-toastify/dist/ReactToastify.css";
 import AutomationHandle from "./AutomationHandle";
 
 // SensorForm component
-const SensorForm = ({ isVisible, onClose }) => {
+const SensorForm = ({ isVisible, onClose, confirmDelete }) => {
   if (!isVisible) return null;
 
   return (
@@ -29,9 +29,20 @@ const SensorForm = ({ isVisible, onClose }) => {
         Broker: <input type="text" name="broker" defaultValue={"Broker_Name"} />
       </label>
       <br />
-      <div>
-        <button className="wrapper gradient" onClick={onClose}>
+      <div style={{ display: "inline-flex" }}>
+        <button
+          className="wrapper gradient"
+          onClick={onClose}
+          style={{ marginRight: "10px", cursor: "pointer" }}
+        >
           <span>Close</span>
+        </button>
+        <button
+          className="wrapper gradient"
+          onClick={confirmDelete}
+          style={{ backgroundColor: "red", cursor: "pointer" }}
+        >
+          <span>Delete</span>
         </button>
       </div>
     </div>
@@ -41,7 +52,7 @@ const SensorForm = ({ isVisible, onClose }) => {
 // TurboNode component
 export default memo(({ id, data, isConnectable }) => {
   const [isFormVisible, setFormVisible] = useState(false);
-  const { setEdges } = useReactFlow();
+  const { setEdges, setNodes } = useReactFlow();
 
   const handleEditClick = (event) => {
     event.preventDefault();
@@ -54,6 +65,40 @@ export default memo(({ id, data, isConnectable }) => {
 
   const onEdgeClick = (id) => {
     setEdges((edges) => edges.filter((edge) => edge.id !== id));
+  };
+
+  const onDeleteNode = (nodeId) => {
+    setNodes((nds) => nds.filter((node) => node.id !== nodeId));
+  };
+
+  const confirmDelete = (nodeId) => {
+    const ConfirmDeleteToast = ({ closeToast }) => (
+      <div>
+        Are you sure you want to delete this node?
+        <button
+          style={{ marginLeft: "10px", color: "green" }}
+          onClick={() => {
+            onDeleteNode(nodeId);
+            closeToast();
+          }}
+        >
+          Yes
+        </button>
+        <button
+          style={{ marginLeft: "10px", color: "red" }}
+          onClick={closeToast}
+        >
+          No
+        </button>
+      </div>
+    );
+
+    toast(<ConfirmDeleteToast />, {
+      position: "top-center",
+      autoClose: false,
+      closeOnClick: false,
+      draggable: false,
+    });
   };
 
   const handleConnect = (connection, id) => {
@@ -91,7 +136,8 @@ export default memo(({ id, data, isConnectable }) => {
           </div>
         </div>
       </button>
-      <SensorForm isVisible={isFormVisible} onClose={handleCloseForm} />
+      <SensorForm isVisible={isFormVisible} onClose={handleCloseForm} 
+        confirmDelete={() => confirmDelete(id)}/>
       <div className="wrapper gradient">
         <div className="inner">
           <div className="body">

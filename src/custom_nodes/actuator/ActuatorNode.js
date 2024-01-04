@@ -68,32 +68,32 @@ export default memo(({ id, data, isConnectable }) => {
     setNodes((nds) => nds.filter((node) => node.id !== nodeId));
   };
 
-const confirmDelete = (nodeId) => {
-  const ConfirmDeleteToast = ({ closeToast }) => (
-    <div>
-      Are you sure you want to delete this node?
-      <button
-        style={{ marginLeft: "10px", color: "green" }}
-        onClick={() => {
-          onDeleteNode(nodeId);
-          closeToast();
-        }}
-      >
-        Yes
-      </button>
-      <button style={{ marginLeft: "10px", color: "red" }} onClick={closeToast}>
-        No
-      </button>
-    </div>
-  );
+  const confirmDelete = (nodeId) => {
+    const ConfirmDeleteToast = ({ closeToast }) => (
+      <div>
+        Are you sure you want to delete this node?
+        <button
+          style={{ marginLeft: "10px", color: "green" }}
+          onClick={() => {
+            onDeleteNode(nodeId);
+            closeToast();
+          }}
+        >
+          Yes
+        </button>
+        <button style={{ marginLeft: "10px", color: "red" }} onClick={closeToast}>
+          No
+        </button>
+      </div>
+    );
 
-  toast(<ConfirmDeleteToast />, {
-    position: "top-center",
-    autoClose: false,
-    closeOnClick: false,
-    draggable: false,
-  });
-};
+    toast(<ConfirmDeleteToast />, {
+      position: "top-center",
+      autoClose: false,
+      closeOnClick: false,
+      draggable: false,
+    });
+  };
 
 
   /* To Prevent not wanted connections that are not supported by the metamodel */
