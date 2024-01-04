@@ -52,7 +52,7 @@ const SensorForm = ({ isVisible, onClose, confirmDelete }) => {
 // TurboNode component
 export default memo(({ id, data, isConnectable }) => {
   const [isFormVisible, setFormVisible] = useState(false);
-  const { setEdges, setNodes } = useReactFlow();
+  const { setNodes } = useReactFlow();
 
   const handleEditClick = (event) => {
     event.preventDefault();
