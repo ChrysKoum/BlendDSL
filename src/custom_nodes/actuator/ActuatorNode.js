@@ -5,7 +5,6 @@ import CustomHandle from "../CustomHandle";
 import { useNodeHandlers } from "../useNodeHandlers";
 import Form from "../Form";
 
-
 // Actuator component
 export default memo(({ id, data, isConnectable }) => {
   const [isFormVisible, setFormVisible] = useState(false);
@@ -32,6 +31,7 @@ export default memo(({ id, data, isConnectable }) => {
         onClose={handleCloseForm}
         confirmDelete={() => confirmDelete(id)}
         formRef={formRef} // Pass the ref to the form
+        initialData={data} // Pass the initial data for the form
       />
       <div className="wrapper gradient">
         <div className="inner">

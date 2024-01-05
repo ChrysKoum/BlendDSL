@@ -2,6 +2,7 @@
 import { useRef, useEffect } from "react";
 import { useReactFlow } from "reactflow";
 import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export function useNodeHandlers(id, isVisible, setIsVisible) {
   const { setEdges, setNodes } = useReactFlow();
@@ -70,6 +71,7 @@ export function useNodeHandlers(id, isVisible, setIsVisible) {
    const handleConnect = (connection, id, data) => {
      if (connection.targetHandle === "automation-target") {
        onEdgeClick(id); // Function to remove the edge
+       console.log("Connection", data);
        toast.error(`${data.title} and Automation cannot connect!`, {
          position: "top-center",
          autoClose: 5000,
@@ -84,7 +86,26 @@ export function useNodeHandlers(id, isVisible, setIsVisible) {
      } else {
        return true;
      }
-   };
+    };
+
+  const automationHandleConnect = (connection, id) => {
+    if (connection.targetHandle !== "automation-target") {
+      onEdgeClick(id); // Function to remove the edge
+      toast.error("Automation only connect with Automations!", {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        style: { backgroundColor: "red", color: "white" },
+      });
+      return false;
+    } else {
+      return true;
+    }
+  };
 
   return {
     formRef,
@@ -94,5 +115,6 @@ export function useNodeHandlers(id, isVisible, setIsVisible) {
     confirmDelete,
     onEdgeClick,
     handleConnect,
+    automationHandleConnect,
   };
 }
