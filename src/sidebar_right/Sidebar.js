@@ -23,7 +23,7 @@ const Sidebar = () => {
       </div>
       <div
         className="dndnode actuators"
-        onDragStart={(event) => onDragStart(event, "Actuators")}
+        onDragStart={(event) => onDragStart(event, "Actuator")}
         draggable
       >
         Actuator
@@ -37,10 +37,10 @@ const Sidebar = () => {
       </div>
       <div
         className="dndnode brokers"
-        onDragStart={(event) => onDragStart(event, "Brokers")}
+        onDragStart={(event) => onDragStart(event, "Broker")}
         draggable
       >
-        Brokers
+        Broker
       </div>
       <div
         className="dndnode automation"
