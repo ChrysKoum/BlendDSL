@@ -36,7 +36,7 @@ import "reactflow/dist/base.css";
 import "./index.css";
 
 /* Custom Nodes */
-import BrockerNode from "./custom_nodes/broker/BrockerNode";
+import BrokerNode from "./custom_nodes/broker/BrokerNode";
 import HybridNode from "./custom_nodes/hybrid/HybridNode";
 import SensorNode from "./custom_nodes/sensors/SensorNode";
 import ActuatorNode from "./custom_nodes/actuator/ActuatorNode";
@@ -44,7 +44,7 @@ import AutomationNode from "./custom_nodes/automation/AutomationNode";
 import CustomEdge from "./custom_edge/CustomEdge";
 
 const nodeTypes = {
-  brocker: BrockerNode,
+  broker: BrokerNode,
   hybrid: HybridNode,
   sensor: SensorNode,
   actuator: ActuatorNode,
