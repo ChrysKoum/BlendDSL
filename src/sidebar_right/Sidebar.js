@@ -9,11 +9,17 @@ const Sidebar = () => {
   return (
     <aside>
       <div className="description">
-        <p>You can drag these nodes to the panel on the left.</p>
-        <p>
+        <h3>You can drag these nodes to the panel on the left.</h3>
+        <h3>
           Also you can delete the nodes and the edges with the backspace key
-        </p>
-      </div>
+        </h3>
+          <h3>The default controls are:</h3>
+          <ul>
+            <li><h4>pan: drag mouse</h4></li>
+            <li><h4>zoom: scroll</h4></li>
+            <li><h4>create selection: Shift + drag</h4></li>
+          </ul>
+        </div>
       <div
         className="dndnode sensor"
         onDragStart={(event) => onDragStart(event, "Sensor")}

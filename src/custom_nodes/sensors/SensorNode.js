@@ -3,7 +3,7 @@ import { Position } from "reactflow";
 import { MdEdit } from "react-icons/md";
 import CustomHandle from "../CustomHandle";
 import { useNodeHandlers } from "../useNodeHandlers";
-import Form from "../Form";
+import Form from "../Forms/Form";
 
 // Actuator component
 export default memo(({ id, data, isConnectable }) => {
@@ -16,7 +16,8 @@ export default memo(({ id, data, isConnectable }) => {
     confirmDelete,
     handleConnect,
     handleUpdateNodeData,
-  } = useNodeHandlers(id, isFormVisible, setFormVisible);
+    setHandleClose,
+  } = useNodeHandlers(id, setFormVisible);
 
   return (
     <>
@@ -34,6 +35,7 @@ export default memo(({ id, data, isConnectable }) => {
         formRef={formRef} // Pass the ref to the form
         initialData={data} // Pass the initial data for the form
         onUpdate={handleUpdateNodeData}
+        onCloseOutside={setHandleClose} // Pass setHandleClose to Form
       />
       <div className="wrapper gradient">
         <div className="inner">

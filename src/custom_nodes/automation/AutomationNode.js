@@ -3,7 +3,7 @@ import { Position } from "reactflow";
 import { MdEdit } from "react-icons/md";
 import AutomationHandle from "./AutomationHandle";
 import { useNodeHandlers } from "../useNodeHandlers";
-import Form from "../Form";
+import FormAutomation from "../Forms/FormAutomation";
 
 
 // TurboNode component
@@ -17,7 +17,8 @@ export default memo(({ id, data, isConnectable }) => {
     confirmDelete,
     automationHandleConnect,
     handleUpdateNodeData,
-  } = useNodeHandlers(id, isFormVisible, setFormVisible);
+    setHandleClose,
+  } = useNodeHandlers(id, setFormVisible);
 
   return (
     <>
@@ -35,13 +36,14 @@ export default memo(({ id, data, isConnectable }) => {
           </div>
         </div>
       </button>
-      <Form
+      <FormAutomation
         isVisible={isFormVisible}
         onClose={handleCloseForm}
         confirmDelete={() => confirmDelete(id)}
         formRef={formRef} // Pass the ref to the form
         initialData={data} // Pass the initial data for the form
         onUpdate={handleUpdateNodeData}
+        onCloseOutside={setHandleClose} // Pass setHandleClose to Form
       />
       <div className="wrapper gradient">
         <div className="inner">

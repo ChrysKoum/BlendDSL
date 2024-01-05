@@ -12,6 +12,7 @@ import ReactFlow, {
 } from "reactflow";
 import "reactflow/dist/style.css";
 import { ToastContainer } from "react-toastify";
+import Button from "@mui/material/Button";
 
 /* Icons of the Nodes */
 import { FaAutoprefixer } from "react-icons/fa";
@@ -19,6 +20,8 @@ import { MdOutlineSensors } from "react-icons/md";
 import { GrAction } from "react-icons/gr";
 import { FaLink } from "react-icons/fa6";
 import { HiOutlineSwitchHorizontal } from "react-icons/hi";
+import { FaSave } from "react-icons/fa";
+import { MdOutlineRestore } from "react-icons/md";
 
 import {
   nodes as initialNodes,
@@ -174,58 +177,80 @@ const DnDnSnRFlow = () => {
 
   return (
     <div className="dndflow">
-        <div className="reactflow-wrapper" ref={reactFlowWrapper}>
-          <ReactFlow
-            nodes={nodes}
-            edges={edges}
-            nodeTypes={nodeTypes}
-            edgeTypes={edgeTypes}
-            defaultEdgeOptions={defaultEdgeOptions}
-            onNodesChange={onNodesChange}
-            onEdgesChange={onEdgesChange}
-            onConnect={onConnect}
-            onInit={setReactFlowInstance}
-            onDrop={onDrop}
-            onDragOver={onDragOver}
-            fitView
-          >
-            <Panel position="top-right">
-              <button onClick={onSave}>save</button>
-              <button onClick={onRestore}>restore</button>
-            </Panel>
-            <Controls />
-            <svg>
-              <defs>
-                <linearGradient id="edge-gradient">
-                  <stop offset="0%" stopColor="#ae53ba" />
-                  <stop offset="100%" stopColor="#2a8af6" />
-                </linearGradient>
+      <div className="reactflow-wrapper" ref={reactFlowWrapper}>
+        <ReactFlow
+          nodes={nodes}
+          edges={edges}
+          nodeTypes={nodeTypes}
+          edgeTypes={edgeTypes}
+          defaultEdgeOptions={defaultEdgeOptions}
+          onNodesChange={onNodesChange}
+          onEdgesChange={onEdgesChange}
+          onConnect={onConnect}
+          onInit={setReactFlowInstance}
+          onDrop={onDrop}
+          onDragOver={onDragOver}
+          fitView
+        >
+          <Panel position="top-right">
+            <div
+              style={{
+                width: "240px",
+                display: "flex",
+                justifyContent: "space-between",
+              }}
+            >
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={onSave}
+                startIcon={<FaSave />}
+              >
+                Save
+              </Button>
+              <Button
+                variant="contained"
+                color="secondary"
+                onClick={onRestore}
+                startIcon={<MdOutlineRestore />}
+              >
+                Restore
+              </Button>
+            </div>
+          </Panel>
+          <Controls />
+          <svg>
+            <defs>
+              <linearGradient id="edge-gradient">
+                <stop offset="0%" stopColor="#ae53ba" />
+                <stop offset="100%" stopColor="#2a8af6" />
+              </linearGradient>
 
-                <marker
-                  id="edge-circle"
-                  viewBox="-5 -5 10 10"
-                  refX="0"
-                  refY="0"
-                  markerUnits="strokeWidth"
-                  markerWidth="10"
-                  markerHeight="10"
-                  orient="auto"
-                >
-                  <circle
-                    stroke="#2a8af6"
-                    strokeOpacity="0.75"
-                    r="2"
-                    cx="0"
-                    cy="0"
-                  />
-                </marker>
-              </defs>
-            </svg>
-            <MiniMap />
-            <Background color="#ccc" gap={12} size={1} />
-          </ReactFlow>
-        </div>
-        <Sidebar />
+              <marker
+                id="edge-circle"
+                viewBox="-5 -5 10 10"
+                refX="0"
+                refY="0"
+                markerUnits="strokeWidth"
+                markerWidth="10"
+                markerHeight="10"
+                orient="auto"
+              >
+                <circle
+                  stroke="#2a8af6"
+                  strokeOpacity="0.75"
+                  r="2"
+                  cx="0"
+                  cy="0"
+                />
+              </marker>
+            </defs>
+          </svg>
+          <MiniMap />
+          <Background color="#ccc" gap={12} size={1} />
+        </ReactFlow>
+      </div>
+      <Sidebar />
       <ToastContainer />
     </div>
   );
