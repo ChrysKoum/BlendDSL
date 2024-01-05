@@ -107,6 +107,19 @@ export function useNodeHandlers(id, isVisible, setIsVisible) {
     }
   };
 
+  /* For updating the node label and subline*/
+  const handleUpdateNodeData = (newData) => {
+    // Update the state of your node here.
+    // For example, if you're using a state variable for your nodes:
+    setNodes((prevNodes) =>
+      prevNodes.map((node) =>
+        node.id === id
+          ? { ...node, data: { ...node.data, ...newData } }
+          : node
+      )
+    );
+  };
+
   return {
     formRef,
     handleEditClick,
@@ -116,5 +129,6 @@ export function useNodeHandlers(id, isVisible, setIsVisible) {
     onEdgeClick,
     handleConnect,
     automationHandleConnect,
+    handleUpdateNodeData,
   };
 }

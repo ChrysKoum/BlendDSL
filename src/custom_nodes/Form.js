@@ -2,22 +2,32 @@ import React, { useState } from "react";
 import { MdDelete } from "react-icons/md";
 import { IoClose } from "react-icons/io5";
 
-export default function SensorForm({
+export default function Form({
   isVisible,
   onClose,
   confirmDelete,
   formRef,
-  initialData // Initial data for the form fields
+  initialData, // Initial data for the form fields
+  onUpdate // New prop for updating the node data
 }) {
-  const [formData, setFormData] = useState(initialData || {
-    type: "Type_Name",
-    freq: 3,
-    topic: "Topic_Name",
-    broker: "Broker_Name"
-  });
+  const [formData, setFormData] = useState(
+    initialData || {
+      title: "Node_Title",
+      subline: "Node_Subline",
+      freq: 3,
+      topic: "Topic_Name",
+      broker: "Broker_Name",
+    }
+  );
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  
+  const handleClose = () => {
+    onUpdate(formData); // Call the update function with the new form data
+    onClose(); // Then close the form
   };
 
   if (!isVisible) return null;
@@ -25,13 +35,24 @@ export default function SensorForm({
   return (
     <div className="sensor-form" ref={formRef}>
       <label>
-        Type:{" "}
+        Title:{" "}
         <input
           type="text"
-          name="type"
-          value={formData.type}
+          name="title"
+          value={formData.title}
           onChange={handleChange}
-          placeholder="Type_Name"
+          placeholder="Title_Name"
+        />
+      </label>
+      <br />
+      <label>
+        Subline:{" "}
+        <input
+          type="text"
+          name="subline"
+          value={formData.subline}
+          onChange={handleChange}
+          placeholder="Subline_Name"
         />
       </label>
       <br />
@@ -74,7 +95,7 @@ export default function SensorForm({
       <div style={{ display: "inline-flex" }}>
         <button
           className="wrapper gradient"
-          onClick={onClose}
+          onClick={handleClose}
           style={{ marginRight: "10px", cursor: "pointer" }}
         >
           <span>

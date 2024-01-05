@@ -13,6 +13,7 @@ export default memo(({ id, data, isConnectable }) => {
     handleEditClick,
     handleCloseForm,
     confirmDelete,
+    handleUpdateNodeData,
   } = useNodeHandlers(id, isFormVisible, setFormVisible);
 
   return (
@@ -37,6 +38,7 @@ export default memo(({ id, data, isConnectable }) => {
         confirmDelete={() => confirmDelete(id)}
         formRef={formRef} // Pass the ref to the form
         initialData={data} // Pass the initial data for the form
+        onUpdate={handleUpdateNodeData}
       />
       <div className="wrapper gradient">
         <div className="inner">
