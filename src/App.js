@@ -7,13 +7,18 @@ import ReactFlow, {
   addEdge,
   useNodesState,
   useEdgesState,
+  useReactFlow,
+  Panel,
 } from "reactflow";
 import "reactflow/dist/style.css";
 import { ToastContainer } from "react-toastify";
 
 /* Icons of the Nodes */
+import { FaAutoprefixer } from "react-icons/fa";
 import { MdOutlineSensors } from "react-icons/md";
-
+import { GrAction } from "react-icons/gr";
+import { FaLink } from "react-icons/fa6";
+import { HiOutlineSwitchHorizontal } from "react-icons/hi";
 
 import {
   nodes as initialNodes,
@@ -52,24 +57,78 @@ const defaultEdgeOptions = {
   markerEnd: "edge-circle",
 };
 
+/* Drag and Drop, Save and Restore Fuctionality*/
+const flowKey = "example-flow";
+
 let id = 0;
 const getId = () => `dndnode_${id++}`;
 
-const DnDFlow = () => {
+const DnDnSnRFlow = () => {
   const reactFlowWrapper = useRef(null);
   const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
   const [reactFlowInstance, setReactFlowInstance] = useState(null);
+  const { setViewport } = useReactFlow();
 
   const onConnect = useCallback(
-    (params) =>
-      setEdges((eds) =>
-        addEdge(params,
-          eds
-        )
-      ),
+    (params) => setEdges((eds) => addEdge(params, eds)),
     [setEdges]
   );
+
+  const onSave = useCallback(() => {
+    if (reactFlowInstance) {
+      const flow = reactFlowInstance.toObject();
+      const simplifiedNodes = flow.nodes.map((node) => ({
+        ...node,
+        data: {
+          ...node.data,
+        },
+      }));
+      const simplifiedFlow = { ...flow, nodes: simplifiedNodes };
+      localStorage.setItem(flowKey, JSON.stringify(simplifiedFlow));
+      console.log("Saving flow: ", simplifiedFlow);
+    }
+  }, [reactFlowInstance]);
+
+  const onRestore = useCallback(() => {
+    const restoreFlow = async () => {
+      const flow = JSON.parse(localStorage.getItem(flowKey));
+      console.log("Restoring flow: ", flow);
+
+      if (flow) {
+        const { x = 0, y = 0, zoom = 1 } = flow.viewport;
+        const reconstructedNodes = flow.nodes.map((node) => ({
+          ...node,
+          data: {
+            ...node.data,
+            icon: reconstructIcon(node.type), // reconstruct icon
+          },
+        }));
+        setNodes(reconstructedNodes || []);
+        setEdges(flow.edges || []);
+        setViewport({ x, y, zoom });
+      }
+    };
+
+    restoreFlow();
+  }, [setNodes, setEdges, setViewport]);
+
+  const reconstructIcon = (iconIdentifier) => {
+    switch (iconIdentifier) {
+      case "hybrid":
+        return <HiOutlineSwitchHorizontal />;
+      case "automation":
+        return <FaAutoprefixer />;
+      case "sensor":
+        return <MdOutlineSensors />;
+      case "actuator":
+        return <GrAction />;
+      case "brocker":
+        return <FaLink />;
+      default:
+        return <MdOutlineSensors />;
+    }
+  };
 
   const onDragOver = useCallback((event) => {
     event.preventDefault();
@@ -93,8 +152,8 @@ const DnDFlow = () => {
           x: event.clientX - reactFlowBounds.left,
           y: event.clientY - reactFlowBounds.top,
         });
-        
-       console.log("Type connection", type); 
+
+        console.log("Type connection", type);
 
         const newNode = {
           id: getId(),
@@ -115,7 +174,6 @@ const DnDFlow = () => {
 
   return (
     <div className="dndflow">
-      <ReactFlowProvider>
         <div className="reactflow-wrapper" ref={reactFlowWrapper}>
           <ReactFlow
             nodes={nodes}
@@ -131,6 +189,10 @@ const DnDFlow = () => {
             onDragOver={onDragOver}
             fitView
           >
+            <Panel position="top-right">
+              <button onClick={onSave}>save</button>
+              <button onClick={onRestore}>restore</button>
+            </Panel>
             <Controls />
             <svg>
               <defs>
@@ -164,10 +226,13 @@ const DnDFlow = () => {
           </ReactFlow>
         </div>
         <Sidebar />
-      </ReactFlowProvider>
       <ToastContainer />
     </div>
   );
 };
-
-export default DnDFlow;
+// eslint-disable-next-line
+export default () => (
+  <ReactFlowProvider>
+    <DnDnSnRFlow />
+  </ReactFlowProvider>
+);
