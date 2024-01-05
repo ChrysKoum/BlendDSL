@@ -49,7 +49,7 @@ export const nodes = [
     id: "5",
     position: { x: 500, y: 175 },
     data: { icon: <FaLink />, title: "Brocker", subline: "MQTT" },
-    type: "brocker",
+    type: "broker",
   },
   {
     id: "6",

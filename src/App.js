@@ -156,14 +156,12 @@ const DnDnSnRFlow = () => {
           y: event.clientY - reactFlowBounds.top,
         });
 
-        console.log("Type connection", type);
-
         const newNode = {
           id: getId(),
           type: `${type.toLowerCase()}`,
           position,
           data: {
-            icon: <MdOutlineSensors />,
+            icon: reconstructIcon(type.toLowerCase()),
             title: `${type} Node`,
             subline: `${type}.ts`,
           },
