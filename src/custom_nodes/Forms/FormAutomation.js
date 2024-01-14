@@ -1,9 +1,11 @@
 import React, { useState, useEffect, useCallback } from "react";
-import TextField from "@mui/material/TextField";
-import Button from "@mui/material/Button";
-import Switch from "@mui/material/Switch";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import FormGroup from "@mui/material/FormGroup";
+import {
+  TextField,
+  Button,
+  Switch,
+  FormControlLabel,
+  FormGroup,
+} from "@mui/material";
 import { MdDelete, MdAdd, MdRemove } from "react-icons/md";
 import { IoClose } from "react-icons/io5";
 
@@ -22,15 +24,14 @@ export default function AutomationForm({
       condition: data?.condition ?? "",
       enabled: data?.enabled ?? true,
       continuous: data?.continuous ?? false,
-      actions: initialData?.actions ?? [{ key: "", value: "" }],
-      starts: data?.starts ?? "",
-      stops: data?.stops ?? "",
+      actions: data?.actions ?? [{ key: "", value: "" }],
+      starts: data?.starts ?? [{ start: "" }],
+      stops: data?.stops ?? [{ stop: "" }],
     };
   };
 
   const [formData, setFormData] = useState(getInitialData(initialData));
 
-  
   const handleChange = (e, index = null, field = null) => {
     const { name, value, type, checked } = e.target;
 
@@ -43,7 +44,7 @@ export default function AutomationForm({
       updatedActions[index][field] = value;
       setFormData({ ...formData, actions: updatedActions });
     } else {
-    setFormData({ ...formData, [name]: value });
+      setFormData({ ...formData, [name]: value });
     }
   };
 
@@ -65,6 +66,32 @@ export default function AutomationForm({
     onClose(); // Then close the form
   }, [formData, onUpdate, onClose]);
 
+  const handleAddStart = () => {
+    setFormData({
+      ...formData,
+      starts: [...formData.starts, { start: "" }],
+    });
+  };
+
+  const handleRemoveStart = (index) => {
+    const updatedStarts = [...formData.starts];
+    updatedStarts.splice(index, 1);
+    setFormData({ ...formData, starts: updatedStarts });
+  };
+
+  const handleAddStop = () => {
+    setFormData({
+      ...formData,
+      stops: [...formData.stops, { stop: "" }],
+    });
+  };
+
+  const handleRemoveStop = (index) => {
+    const updatedStops = [...formData.stops];
+    updatedStops.splice(index, 1);
+    setFormData({ ...formData, stops: updatedStops });
+  };
+
   // Pass handleClose to the onCloseOutside prop
   useEffect(() => {
     if (onCloseOutside) {
@@ -74,7 +101,7 @@ export default function AutomationForm({
 
   if (!isVisible) return null;
 
-  return (
+   return (
     <div className="automation-form" ref={formRef}>
       <TextField
         label="Title"
@@ -242,68 +269,111 @@ export default function AutomationForm({
           Add Action
         </Button>
       </div>
-      <TextField
-        label="Starts"
-        name="starts"
-        value={formData.starts}
-        onChange={handleChange}
-        margin="normal"
-        fullWidth
-        variant="outlined"
-        InputLabelProps={{
-          style: { color: "white" },
-        }}
-        InputProps={{
-          style: { color: "white" },
-        }}
-        sx={{
-          "& label.Mui-focused": {
-            color: "white",
-          },
-          "& .MuiOutlinedInput-root": {
-            "& fieldset": {
-              borderColor: "white",
-            },
-            "&:hover fieldset": {
-              borderColor: "white",
-            },
-            "&.Mui-focused fieldset": {
-              borderColor: "white",
-            },
-          },
-        }}
-      />
-      <TextField
-        label="Stops"
-        name="stops"
-        value={formData.stops}
-        onChange={handleChange}
-        margin="normal"
-        fullWidth
-        variant="outlined"
-        InputLabelProps={{
-          style: { color: "white" },
-        }}
-        InputProps={{
-          style: { color: "white" },
-        }}
-        sx={{
-          "& label.Mui-focused": {
-            color: "white",
-          },
-          "& .MuiOutlinedInput-root": {
-            "& fieldset": {
-              borderColor: "white",
-            },
-            "&:hover fieldset": {
-              borderColor: "white",
-            },
-            "&.Mui-focused fieldset": {
-              borderColor: "white",
-            },
-          },
-        }}
-      />
+
+      <div>
+        <label>Starts:</label>
+        {formData.starts.map((start, index) => (
+          <div
+            key={index}
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: "10px",
+              marginBottom: "10px",
+              marginTop: "10px",
+            }}
+          >
+            <TextField
+              label="Start"
+              value={start.start}
+              onChange={(e) => handleChange(e, index, "start")}
+              variant="outlined"
+              style={{ flex: 3 }}
+              InputLabelProps={{
+                style: { color: "white" },
+              }}
+              InputProps={{
+                style: { color: "white" },
+              }}
+              sx={{
+                "& label.Mui-focused": {
+                  color: "white",
+                },
+                "& .MuiOutlinedInput-root": {
+                  "& fieldset": {
+                    borderColor: "white",
+                  },
+                  "&:hover fieldset": {
+                    borderColor: "white",
+                  },
+                  "&.Mui-focused fieldset": {
+                    borderColor: "white",
+                  },
+                },
+              }}
+            />
+            <Button onClick={() => handleRemoveStart(index)}>
+              <MdRemove />
+            </Button>
+          </div>
+        ))}
+        <Button onClick={handleAddStart} startIcon={<MdAdd />}>
+          Add Start
+        </Button>
+      </div>
+
+      <div>
+        <label>Stops:</label>
+        {formData.stops.map((stop, index) => (
+          <div
+            key={index}
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: "10px",
+              marginBottom: "10px",
+              marginTop: "10px",
+            }}
+          >
+            <TextField
+              label="Stop"
+              value={stop.stop}
+              onChange={(e) => handleChange(e, index, "stop")}
+              variant="outlined"
+              style={{ flex: 3 }}
+              InputLabelProps={{
+                style: { color: "white" },
+              }}
+              InputProps={{
+                style: { color: "white" },
+              }}
+              sx={{
+                "& label.Mui-focused": {
+                  color: "white",
+                },
+                "& .MuiOutlinedInput-root": {
+                  "& fieldset": {
+                    borderColor: "white",
+                  },
+                  "&:hover fieldset": {
+                    borderColor: "white",
+                  },
+                  "&.Mui-focused fieldset": {
+                    borderColor: "white",
+                  },
+                },
+              }}
+            />
+            <Button onClick={() => handleRemoveStop(index)}>
+              <MdRemove />
+            </Button>
+          </div>
+        ))}
+        <Button onClick={handleAddStop} startIcon={<MdAdd />}>
+          Add Stop
+        </Button>
+      </div>
+
       <div
         style={{
           marginTop: "20px",
@@ -333,5 +403,5 @@ export default function AutomationForm({
         </Button>
       </div>
     </div>
-  );
+   );
 }
