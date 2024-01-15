@@ -36,6 +36,7 @@ export default memo(({ id, data, isConnectable }) => {
         initialData={data} // Pass the initial data for the form
         onUpdate={handleUpdateNodeData}
         onCloseOutside={setHandleClose} // Pass setHandleClose to Form
+        isType={"Sensor"} // Pass Type to Form
       />
       <div className="wrapper gradient">
         <div className="inner">

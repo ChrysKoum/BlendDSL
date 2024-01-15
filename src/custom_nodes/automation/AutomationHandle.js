@@ -24,7 +24,7 @@ const AutomationHandle = (props) => {
     //  }
 
     // limit to only none connection for others nodes
-     return connectedEdges.length < 3;
+     return connectedEdges.length < 5;
    }, [nodeInternals, edges, nodeId]);
 
   return <Handle {...props} isConnectable={isHandleConnectable}></Handle>;

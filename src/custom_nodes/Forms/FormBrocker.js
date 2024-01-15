@@ -3,9 +3,7 @@ import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import { MdDelete } from "react-icons/md";
 import { IoClose } from "react-icons/io5";
-import Slider from "@mui/material/Slider";
 import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
 
 export default function Form({
   isVisible,
@@ -15,37 +13,24 @@ export default function Form({
   initialData, // Initial data for the form fields
   onUpdate, // New prop for updating the node data
   onCloseOutside, // New prop for handling outside clicks
-  isType,
 }) {
-  const getInitialData = (data, type) => {
+  const getInitialData = (data) => {
     return {
       title: data?.title ?? "Node_Title",
       subline: data?.subline ?? "Node_Subline",
-      freq: data?.freq ?? 3,
-      type: type ?? "Type",
-      topic: data?.topic ?? "Topic_Name",
-      broker: isType?.broker ?? "Broker_Name",
+      host: data?.host ?? "localhost",
+      port: data?.port ?? 1883,
+      password: data?.password ?? "password",
+      username: data?.username ?? "Username",
     };
   };
 
-  const [formData, setFormData] = useState(getInitialData(initialData, isType));
+  const [formData, setFormData] = useState(getInitialData(initialData));
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSliderChange = (event, newValue) => {
-    setFormData({ ...formData, freq: newValue });
-  };
-
-  // Function to stop event propagation
-  const stopPropagation = (e) => {
-    e.stopPropagation();
-  };
-
-  const handleDragStart = (e) => {
-    e.stopPropagation(); // Stop drag event from propagating to parent
-  };
   const handleClose = useCallback(() => {
     onUpdate(formData); // Call the update function with the new form data
     onClose(); // Then close the form
@@ -61,19 +46,7 @@ export default function Form({
   if (!isVisible) return null;
 
   return (
-    <div
-      sx={{ padding: 2 }}
-      ref={formRef}
-      className="form"
-      onDragStart={handleDragStart} // Add the drag start handler
-      style={{
-        userSelect: "none", // Prevent text selection and dragging
-        pointerEvents: "all", // Ensure mouse events are captured
-      }}
-      onMouseDown={stopPropagation}
-      onMouseMove={stopPropagation}
-      onMouseUp={stopPropagation}
-    >
+    <div sx={{ padding: 2 }} ref={formRef} className="form">
       <TextField
         label="Title"
         name="title"
@@ -142,109 +115,137 @@ export default function Form({
           },
         }}
       />
-      <Typography gutterBottom>Frequency (Hz): {formData.freq}</Typography>
-      <Slider
-        value={typeof formData.freq === "number" ? formData.freq : 0}
-        onChange={handleSliderChange}
-        aria-labelledby="input-slider"
-        min={1}
-        max={10}
-        name="freq"
+      <TextField
+        label="Host"
+        name="host"
+        value={formData.host}
+        onChange={handleChange}
+        margin="normal"
+        fullWidth
+        variant="outlined"
+        InputLabelProps={{
+          style: { color: "white" },
+        }}
+        InputProps={{
+          style: { color: "white" },
+        }}
+        sx={{
+          "& label.Mui-focused": {
+            color: "white",
+          },
+          "& .MuiOutlinedInput-root": {
+            "& fieldset": {
+              borderColor: "white",
+            },
+            "&:hover fieldset": {
+              borderColor: "white",
+            },
+            "&.Mui-focused fieldset": {
+              borderColor: "white",
+            },
+          },
+        }}
+      />
+      <TextField
+        label="Port"
+        name="port"
+        value={formData.port}
+        onChange={handleChange}
+        margin="normal"
+        fullWidth
+        variant="outlined"
+        InputLabelProps={{
+          style: { color: "white" },
+        }}
+        InputProps={{
+          style: { color: "white" },
+        }}
+        sx={{
+          "& label.Mui-focused": {
+            color: "white",
+          },
+          "& .MuiOutlinedInput-root": {
+            "& fieldset": {
+              borderColor: "white",
+            },
+            "&:hover fieldset": {
+              borderColor: "white",
+            },
+            "&.Mui-focused fieldset": {
+              borderColor: "white",
+            },
+          },
+        }}
       />
 
-      <TextField
-        label="Type"
-        name="type"
-        value={formData.type}
-        onChange={handleChange}
-        margin="normal"
-        fullWidth
-        variant="outlined"
-        InputLabelProps={{
-          style: { color: "white" },
-        }}
-        InputProps={{
-          style: { color: "white" },
-        }}
-        sx={{
-          "& label.Mui-focused": {
-            color: "white",
-          },
-          "& .MuiOutlinedInput-root": {
-            "& fieldset": {
-              borderColor: "white",
+      <div>
+        <label>Auth:</label>
+        <TextField
+          label="Username"
+          name="username"
+          value={formData.username}
+          onChange={handleChange}
+          style={{ flex: 3 }}
+          margin="normal"
+          fullWidth
+          variant="outlined"
+          InputLabelProps={{
+            style: { color: "white" },
+          }}
+          InputProps={{
+            style: { color: "white" },
+          }}
+          sx={{
+            "& label.Mui-focused": {
+              color: "white",
             },
-            "&:hover fieldset": {
-              borderColor: "white",
+            "& .MuiOutlinedInput-root": {
+              "& fieldset": {
+                borderColor: "white",
+              },
+              "&:hover fieldset": {
+                borderColor: "white",
+              },
+              "&.Mui-focused fieldset": {
+                borderColor: "white",
+              },
             },
-            "&.Mui-focused fieldset": {
-              borderColor: "white",
+          }}
+        />
+        <TextField
+          label="Password"
+          name="password"
+          type="password"
+          value={formData.password}
+          onChange={handleChange}
+          style={{ flex: 2 }}
+          margin="normal"
+          fullWidth
+          variant="outlined"
+          InputLabelProps={{
+            style: { color: "white" },
+          }}
+          InputProps={{
+            style: { color: "white" },
+          }}
+          sx={{
+            "& label.Mui-focused": {
+              color: "white",
             },
-          },
-        }}
-      />
-      <TextField
-        label="Topic"
-        name="topic"
-        value={formData.topic}
-        onChange={handleChange}
-        margin="normal"
-        fullWidth
-        variant="outlined"
-        InputLabelProps={{
-          style: { color: "white" },
-        }}
-        InputProps={{
-          style: { color: "white" },
-        }}
-        sx={{
-          "& label.Mui-focused": {
-            color: "white",
-          },
-          "& .MuiOutlinedInput-root": {
-            "& fieldset": {
-              borderColor: "white",
+            "& .MuiOutlinedInput-root": {
+              "& fieldset": {
+                borderColor: "white",
+              },
+              "&:hover fieldset": {
+                borderColor: "white",
+              },
+              "&.Mui-focused fieldset": {
+                borderColor: "white",
+              },
             },
-            "&:hover fieldset": {
-              borderColor: "white",
-            },
-            "&.Mui-focused fieldset": {
-              borderColor: "white",
-            },
-          },
-        }}
-      />
-      <TextField
-        label="Broker"
-        name="broker"
-        value={formData.broker}
-        onChange={handleChange}
-        margin="normal"
-        fullWidth
-        variant="outlined"
-        InputLabelProps={{
-          style: { color: "white" },
-        }}
-        InputProps={{
-          style: { color: "white" },
-        }}
-        sx={{
-          "& label.Mui-focused": {
-            color: "white",
-          },
-          "& .MuiOutlinedInput-root": {
-            "& fieldset": {
-              borderColor: "white",
-            },
-            "&:hover fieldset": {
-              borderColor: "white",
-            },
-            "&.Mui-focused fieldset": {
-              borderColor: "white",
-            },
-          },
-        }}
-      />
+          }}
+        />
+      </div>
       <Box sx={{ display: "flex", gap: 2, marginTop: 2 }}>
         <Button
           variant="contained"
