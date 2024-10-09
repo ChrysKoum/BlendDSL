@@ -103,7 +103,7 @@ The roadmap for **BlendXSync** includes the following milestones:
 
 ## **BlendDSL Repository**
 
-**BlendDSL**, the core language framework used in **BlendXSync**, will be hosted in a separate repository. This allows for independent development and evolution of the DSL framework while keeping the focus of **BlendXSync** on synchronization and transformation mechanisms. The **BlendDSL** repository will include support for creating and managing domain-specific languages through JSON schema-based transformations.
+**[BlendDSL](https://github.com/ChrysKoum/Blend-DSL/tree/main)**, the core language framework used in **BlendXSync**, will be hosted in a separate repository. This allows for independent development and evolution of the DSL framework while keeping the focus of **BlendXSync** on synchronization and transformation mechanisms. The **BlendDSL** repository will include support for creating and managing domain-specific languages through JSON schema-based transformations.
 
 Once **BlendDSL** is released, users will be able to define their own DSLs and integrate them with **BlendXSync** for real-time synchronization between textual and graphical models.
 
